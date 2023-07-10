@@ -1,30 +1,34 @@
 import React from 'react';
-import Link from "next/link"
+import Link from "next/link";
+import { urlFor } from '../lib/client';
 
-const HeroBanner = () => {
+const HeroBanner = ({ heroBanner }) => {
   return (
     <div className='hero-banner-container'>
       <div>
         <p className='doctor-solo'>
-          Hello There
+          {heroBanner.smallText}
         </p>
         <h3>
-          T.A.R.D.I.S
+          {heroBanner.midText}
         </h3>
+        <h1>
+          {heroBanner.largeText1}
+        </h1>
         <img
-          src=''
+          src={urlFor(heroBanner.image)}
           alt='Watch'
           className='hero-banner-image'
         />
 
         <div>
           <Link
-            href='/product/ID'
+            href={'/product/${heroBanner.product}'}
           >
             <button
               type='button'
             >
-              Button
+              {heroBanner.buttonText}
             </button>
           </Link>
 
@@ -33,7 +37,7 @@ const HeroBanner = () => {
               Description
             </h5>
             <p>
-              Description
+              {heroBanner.desc}
             </p>
           </div>
         </div>
