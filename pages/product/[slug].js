@@ -5,13 +5,13 @@ import { Product } from '../../components';
 
 import { useStateContext } from "../../context/StateContext";
 
-const ProductDetails = ({ products, product }) => {
+const ProductDetails = ({ product, products }) => {
 
   const [index, setIndex] = useState(0)
 
-  const { name, image, details, price } = product;
+  const { image, name, details, price } = product;
 
-  const { increaseQuantity, decreaseQuantity, qty, onAdd } = useStateContext();
+  const { setShowCart, increaseQuantity, decreaseQuantity, qty, onAdd } = useStateContext();
 
   return (
 
@@ -137,9 +137,9 @@ export const getStaticPaths = async () => {
 }
 
 export const getStaticProps = async ({ params: {slug} }) => {
-const productQuery = `*[_type == "product" && slug.current == '${slug}'][0]`;
+const productsQuery = `*[_type == "product" && slug.current == '${slug}'][0]`;
     const query = '*[_type == "product"]'
-    const product = await client.fetch(productQuery);
+    const product = await client.fetch(productsQuery);
     const products = await client.fetch(query)
 
     return {

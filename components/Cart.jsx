@@ -25,9 +25,13 @@ const Cart = () => {
     });
     if(response.statusCode === 500) return;
 
-    const data = await response.json;
+    const data = response.json;
     toast.loading('Redirecting...');
-   // stripe.redirectToCheckout({ sessionId: data.id });
+    //stripe.redirectToCheckout({ sessionId: data.id });
+    //window.location.replace(data.url);
+    //window.open(`https://checkout.stripe.com/pay/${data.sessionId}`);
+    window.location.replace(`https://checkout.stripe.com/pay/${data.sessionId}`);
+
   }
 
   return (

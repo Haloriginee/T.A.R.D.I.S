@@ -1,6 +1,6 @@
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
   if (req.method === 'POST') {
@@ -17,8 +17,8 @@ export default async function handler(req, res) {
         ],
         line_items: req.body.map((item) => {
           const img = item.image[0].asset._ref;
-          const newImage = img.replace('image-', 'https://cdn.sanity.io/images/7vdorx9h/production/').replace('-webp', '.webp');
-          //console.log("IMAGE", newImage)
+          const newImage = img.replace('image-', 'https://cdn.sanity.io/images/7vdorx9h/production/').replace('-png', '.png');
+          console.log("IMAGE", newImage)
 
           return {
             price_data: {
@@ -36,16 +36,16 @@ export default async function handler(req, res) {
             quantity: item.quantity
           }
         }),
-        success_url: `${req.headers.origin}/success`,
-        cancel_url: `${req.headers.origin}/canceled`,
+        //success_url: `${req.headers.origin}/?success=true`,
+        //cancel_url: `${req.headers.origin}/?canceled=true`,
       }
 
       // Create Checkout Sessions from body params.
       const session = await stripe.checkout.sessions.create(params);
 
       res.status(200).json(session);
-    } catch (err) {
-      res.status(err.statusCode || 500).json(err.message);
+    } catch (error) {
+      res.status(500).json({ statusCode: 500, message: error.message });
     }
   } else {
     res.setHeader('Allow', 'POST');
