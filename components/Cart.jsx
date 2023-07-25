@@ -19,6 +19,7 @@ const Cart = () => {
     const response = await fetch('/api/stripe', {
       method: 'POST',
       headers: {
+        Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(cartItems),
@@ -26,12 +27,12 @@ const Cart = () => {
     if(response.statusCode === 500) return;
 
     const data = response.json;
+    console.log("data",data)
     toast.loading('Redirecting...');
-    //stripe.redirectToCheckout({ sessionId: data.id });
-    //window.location.replace(data.url);
+    //stripe.redirectToCheckout({ sessionId: data.id }); !! deprecated !!
+    window.location.replace(data.url);
     //window.open(`https://checkout.stripe.com/pay/${data.sessionId}`);
-    window.location.replace(`https://checkout.stripe.com/pay/${data.sessionId}`);
-
+    //window.location.replace(`https://checkout.stripe.com/pay/${data.url}`)
   }
 
   return (
