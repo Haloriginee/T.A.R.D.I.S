@@ -19,20 +19,21 @@ const Cart = () => {
     const response = await fetch('/api/stripe', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
+        // Authorization: `Bearer ${process.env.STRIPE_SECRET_KEY}`,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(cartItems),
     });
     if(response.statusCode === 500) return;
 
-    const data = response.json;
-    console.log("data",data)
+    const data = await response.json;
+    //console.log("data", data)
     toast.loading('Redirecting...');
     //stripe.redirectToCheckout({ sessionId: data.id }); !! deprecated !!
-    window.location.replace(data.url);
+    //window.location.replace(data.url);
     //window.open(`https://checkout.stripe.com/pay/${data.sessionId}`);
-    //window.location.replace(`https://checkout.stripe.com/pay/${data.url}`)
+   // window.location.replace(`https://checkout.stripe.com/pay/${data.url}`)
+    window.location.search(data.url)
   }
 
   return (
