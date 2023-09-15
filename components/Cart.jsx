@@ -33,7 +33,7 @@ const Cart = () => {
     //window.location.replace(data.url);
     //window.open(`https://checkout.stripe.com/pay/${data.sessionId}`);
    // window.location.replace(`https://checkout.stripe.com/pay/${data.url}`)
-    window.location.search(data.url)
+    window.location.replace(data.url)
   }
 
   return (

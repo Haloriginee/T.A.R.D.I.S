@@ -124,30 +124,38 @@ const ProductDetails = ({ product, products }) => {
 }
 
 export const getStaticPaths = async () => {
-  const query = `*[_type == "product"] { slug {current} }`;
-
+  const query = `*[_type == "product"]{
+        slug {
+            current
+        }
+    }
+    `;
   const products = await client.fetch(query);
   const paths = products.map((product) => ({
-    params: { slug: product.slug.current }
-  }))
+    params: {
+      slug: product.slug.current,
+    },
+  }));
   return {
     paths,
     fallback: "blocking",
-  }
-}
+  };
+};
 
-export const getStaticProps = async ({ params: {slug} }) => {
-  const query = `*[_type == "product" && slug.current == '${slug}'][0]`;
-  const productsQuery = '*[_type == "product"]'
+export const getStaticProps = async ({ params: { slug } }) => {
+  // grabs all of the product details from the product page we are on
+  const query = `*[_type == "product" && slug.current =='${slug}'][0]`;
+
+  //fetches all of the products that has the same product type as our product
+  const productsQuery = '*[_type=="product"]';
+
   const product = await client.fetch(query);
-  const products = await client.fetch(productsQuery)
+  const products = await client.fetch(productsQuery);
 
-  //console.log(product);
-
-    return {
-      props: { products, product }
-    }
-  }
+  return {
+    props: { product, products },
+  };
+};
 
 
 export default ProductDetails
